@@ -46,6 +46,33 @@ def login():
     else:
         return jsonify({'error': 'Invalid email or password.'}), 401
 
+
+
+@app.route('/posts',methods=["GET"])
+def getPosts():
+    posts = Post.query.all()
+    post_list = [post.to_dict() for post in posts]
+    return jsonify(posts=post_list)
+
+
+@app.route('/posts/<int:post_id>',methods=["GET"])
+def get_post_by_id(post_id):
+    Posts = Post.query.get(post_id)
+    if Posts:
+        return jsonify(Posts.to_dict())
+    else:
+        return jsonify({'error': 'Post not found.'}), 404
+    
+@app.route('/post/create',methods=["POST"])
+def create_post():
+    title = request.json['title']
+    content = request.json['content']
+    user_id = request.json['user_id']
+    new_post = Post(title=title, content=content, user_id=user_id)
+    db.session.add(new_post)
+    db.session.commit()
+    return jsonify({'message': 'post added successfully.', 'user': new_post.to_dict()}), 201
+
 if __name__ == '__main__':
     with app.app_context():  
         db.create_all()  
