@@ -31,7 +31,8 @@ def register_user():
     name = request.json['name']
     email = request.json['email']
     password = request.json['password']
-    new_user = User(name=name, email=email, password=password)
+    profile = request.json['profile']
+    new_user = User(name=name, email=email, password=password,profile=profile)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User added successfully.', 'user': new_user.to_dict()}), 201
@@ -71,7 +72,32 @@ def create_post():
     new_post = Post(title=title, content=content, user_id=user_id)
     db.session.add(new_post)
     db.session.commit()
-    return jsonify({'message': 'post added successfully.', 'user': new_post.to_dict()}), 201
+    return jsonify({'message': 'post added successfully.', 'post': new_post.to_dict()}), 201
+
+
+@app.route('/post/<int:id>',methods=["PUT"])
+def update_post(id):
+    post = Post.query.get(id)
+    if post:
+        post.title = request.json['title']
+        post.content = request.json['content']
+        post.user_id = request.json['user_id']
+        db.session.commit()
+        return jsonify({'message': 'post updated successfully.', 'post': post.to_dict()})
+    else:
+        return jsonify({'error': 'post not found.'}), 404
+
+@app.route('/post/<int:id>', methods=['DELETE'])
+def delete_post(id):
+    post = Post.query.get(id)
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'message': 'post deleted successfully.'})
+    else:
+        return jsonify({'error': 'post not found.'}), 404
+
+
 
 if __name__ == '__main__':
     with app.app_context():  
