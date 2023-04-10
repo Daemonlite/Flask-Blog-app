@@ -1,9 +1,19 @@
 from flask import Flask, jsonify, request
 from models import db, User, Post,Comment,Like
+from flask_cors import CORS
+
 
 
 app = Flask(__name__)
+CORS(app)  # Apply CORS settings to the Flask app
 
+@app.after_request
+def add_cors_headers(response):
+    # Add CORS headers to the response
+    response.headers.add('Access-Control-Allow-Origin', '*') # Allow requests from any origin
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization') # Allow specific headers
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE') # Allow specific HTTP methods
+    return response
 # Configure the database connection settings
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
