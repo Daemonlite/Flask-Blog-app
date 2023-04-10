@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from models import db, User, Post
+from models import db, User, Post,Comment,Like
 
 
 app = Flask(__name__)
@@ -107,6 +107,78 @@ def delete_post(id):
         return jsonify({'error': 'post not found.'}), 404
 
 
+
+# Route to create a new comment for a post
+@app.route('/post/<int:post_id>/comment', methods=['POST'])
+def create_comment(post_id):
+    # Get the post by ID
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Get the data from the request
+    content = request.form.get('content')
+    user_id = request.form.get('user_id')
+
+    # Create a new comment
+    comment = Comment(content=content, user_id=user_id, post_id=post.id)
+    db.session.add(comment)
+    db.session.commit()
+
+    return jsonify({'message': 'Comment created successfully', 'comment_id': comment.id}), 201
+
+
+# Route to get all comments for a post
+@app.route('/post/<int:post_id>/comments', methods=['GET'])
+def get_comments(post_id):
+    # Get the post by ID
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Get all comments for the post
+    comments = Comment.query.filter_by(post_id=post.id).all()
+
+    # Convert comments to a list of dictionaries
+    comments_dict = [comment.to_dict() for comment in comments]
+
+    return jsonify({'comments': comments_dict}), 200
+
+
+# Route to create a new like for a post
+@app.route('/post/<int:post_id>/like', methods=['POST'])
+def create_like(post_id):
+    # Get the post by ID
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Get the data from the request
+    user_id = request.form.get('user_id')
+
+    # Create a new like
+    like = Like(user_id=user_id, post_id=post.id)
+    db.session.add(like)
+    db.session.commit()
+
+    return jsonify({'message': 'Like created successfully', 'like_id': like.id}), 201
+
+
+# Route to get all likes for a post
+@app.route('/post/<int:post_id>/likes', methods=['GET'])
+def get_likes(post_id):
+    # Get the post by ID
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Get all likes for the post
+    likes = Like.query.filter_by(post_id=post.id).all()
+
+    # Convert likes to a list of dictionaries
+    likes_dict = [like.to_dict() for like in likes]
+
+    return jsonify({'likes': likes_dict}), 200
 
 if __name__ == '__main__':
     with app.app_context():  
