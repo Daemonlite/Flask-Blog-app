@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from models import db, User, Post
 
+
 app = Flask(__name__)
 
 # Configure the database connection settings
@@ -47,7 +48,15 @@ def login():
     else:
         return jsonify({'error': 'Invalid email or password.'}), 401
 
-
+@app.route('/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({'message': 'user deleted successfully.'})
+    else:
+        return jsonify({'error': 'user not found.'}), 404
 
 @app.route('/posts',methods=["GET"])
 def getPosts():
@@ -64,7 +73,7 @@ def get_post_by_id(post_id):
     else:
         return jsonify({'error': 'Post not found.'}), 404
     
-@app.route('/post/create',methods=["POST"])
+@app.route('/posts/create',methods=["POST"])
 def create_post():
     title = request.json['title']
     content = request.json['content']
@@ -75,7 +84,7 @@ def create_post():
     return jsonify({'message': 'post added successfully.', 'post': new_post.to_dict()}), 201
 
 
-@app.route('/post/<int:id>',methods=["PUT"])
+@app.route('/posts/<int:id>',methods=["PUT"])
 def update_post(id):
     post = Post.query.get(id)
     if post:
@@ -87,7 +96,7 @@ def update_post(id):
     else:
         return jsonify({'error': 'post not found.'}), 404
 
-@app.route('/post/<int:id>', methods=['DELETE'])
+@app.route('/posts/<int:id>', methods=['DELETE'])
 def delete_post(id):
     post = Post.query.get(id)
     if post:
