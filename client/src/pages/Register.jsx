@@ -20,6 +20,7 @@ const Register = () => {
   const [fullName, setFullName] = useState("");
   const [profile, setProfile] = useState("");
 
+  
 
   const navigate = useNavigate();
   const handleFileChange = async (e) => {
@@ -42,7 +43,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:7000/api/users/register/", {
+      .post("http://localhost:5000/register/", {
         name:fullName,
         email,
         password,
@@ -80,7 +81,7 @@ const Register = () => {
       password: Password,
       profile:userObject.picture,
       name:userObject.name,
-     
+      
 
     })
     .then((res) => {
@@ -139,7 +140,7 @@ const Register = () => {
               type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
- 
+
             <label htmlFor="profile">Choose profile photo</label>
             <TextField
               id="outlined-basic"
