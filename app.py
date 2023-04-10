@@ -117,8 +117,16 @@ def create_comment(post_id):
         return jsonify({'error': 'Post not found'}), 404
 
     # Get the data from the request
-    content = request.form.get('content')
-    user_id = request.form.get('user_id')
+    content = request.json.get('content')
+    user_id = request.json.get('user_id')
+
+    # Check if content is provided
+    if not content:
+        return jsonify({'error': 'Comment content is required'}), 400
+
+    # Check if user_id is provided
+    if not user_id:
+        return jsonify({'error': 'User ID is required'}), 400
 
     # Create a new comment
     comment = Comment(content=content, user_id=user_id, post_id=post.id)
@@ -154,7 +162,7 @@ def create_like(post_id):
         return jsonify({'error': 'Post not found'}), 404
 
     # Get the data from the request
-    user_id = request.form.get('user_id')
+    user_id = request.json.get('user_id')
 
     # Create a new like
     like = Like(user_id=user_id, post_id=post.id)
