@@ -19,19 +19,8 @@ const Register = () => {
   const [password, setpassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [profile, setProfile] = useState("");
-  const [location, setLocation] = useState("");
-  const [bio, setBio] = useState("");
-  const [isInvestor, setIsInvestor] = useState(false);
-  
 
-  //fetches the users location automatically
-  useEffect(() => {
-    fetch("https://ipapi.co/json/")
-      .then((response) => response.json())
-      .then((data) => {
-        setLocation(data.city);
-      });
-  }, []);
+
   const navigate = useNavigate();
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -54,13 +43,10 @@ const Register = () => {
     e.preventDefault();
     axios
       .post("http://localhost:7000/api/users/register/", {
-        fullName,
+        name:fullName,
         email,
         password,
         profile,
-        location,
-        bio,
-        isInvestor,
       })
       .then((res) => {
         toast.success("Register successful");
@@ -93,7 +79,7 @@ const Register = () => {
       email: userObject.email,
       password: Password,
       profile:userObject.picture,
-      fullName:userObject.name,
+      name:userObject.name,
      
 
     })
@@ -153,29 +139,7 @@ const Register = () => {
               type="email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <TextField
-              id="outlined-basic"
-              label="Add Bio"
-              variant="outlined"
-              type="text"
-              onChange={(e) => setBio(e.target.value)}
-              className="bio"
-            />
-            <select
-              style={{ color: "#555" }}
-              className="form-control"
-              onChange={(e) => setIsInvestor(e.target.value)}
-            >
-              <option value="nothing">
-                Are you an Investor
-              </option>
-              <option value="true" className="form-control">
-                Yes
-              </option>
-              <option value="false" className="form-control">
-                No
-              </option>
-            </select>
+ 
             <label htmlFor="profile">Choose profile photo</label>
             <TextField
               id="outlined-basic"
