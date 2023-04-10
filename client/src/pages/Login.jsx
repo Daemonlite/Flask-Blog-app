@@ -92,7 +92,6 @@ const Login = () => {
     <div>
       <div className="land">
         <header>
-          <h1 className="head">Welcome to a professional community</h1>
           <Box
             component="form"
             sx={{
@@ -161,13 +160,7 @@ const Login = () => {
             </a>
           </Box>
         </header>
-        <div className="head-img">
-          <img
-            src="https://img.freepik.com/premium-vector/african-girl-study-computer-online-learning-concept-video-lesson-distance-study_186332-185.jpg?w=740"
-            alt=""
-            width="800px"
-          />
-        </div>
+
       </div>
     </div>
   );
