@@ -17,7 +17,7 @@ const Register = () => {
     console.log(userObject);
     const Password = `${userObject.given_name}wegvfejwy1@`;
     axios
-      .post("http://localhost:5000/register/", {
+      .post("http://127.0.0.1:5000/register", {
         email: userObject.email,
         password: Password,
         profile: userObject.picture,

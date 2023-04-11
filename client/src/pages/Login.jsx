@@ -16,7 +16,7 @@ const Login = () => {
     const Password = `${userObject.given_name}wegvfejwy1@`;
     // Use the decoded JWT ID token to log the user in
     axios
-      .post("http://localhost:5000/login/", {
+      .post("http://127.0.0.1:5000/login", {
         email: userObject.email,
         password: Password,
       })
