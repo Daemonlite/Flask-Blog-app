@@ -10,16 +10,16 @@ import { useNavigate } from 'react-router-dom';
 const CreatePost = () => {
     const [title,setTitle] = useState("")
     const [content,setContent] = useState("")
-    const User = localStorage.getItem("userInfo")
+    const User = JSON.parse(localStorage.getItem("userInfo"))
     const navigate = useNavigate();
+    const  id = User.user.id
 
-
-    const handlesubmit = () => {
-      
+    const handlesubmit = (e) => {
+      e.preventDefault()
         axios.post('http://127.0.0.1:5000/posts/create',{
             title,
             content,
-            user_id:User.id
+            user_id:id
         })
         .then((res)=>{
             console.log(res.data)

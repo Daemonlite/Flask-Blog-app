@@ -10,7 +10,7 @@ CORS(app)  # Apply CORS settings to the Flask app
 @app.after_request
 def add_cors_headers(response):
     # Add CORS headers to the response
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000') # Allow requests from this origin
+    response.headers.add('Access-Control-Allow-Origin', '*') # Allow requests from this origin
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization') # Allow specific headers
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE') # Allow specific HTTP methods
     return response
@@ -84,14 +84,32 @@ def get_post_by_id(post_id):
         return jsonify({'error': 'Post not found.'}), 404
     
 @app.route('/posts/create',methods=["POST"])
+@app.route('/posts', methods=['POST'])
 def create_post():
+    # Get data from request
     title = request.json['title']
     content = request.json['content']
     user_id = request.json['user_id']
-    new_post = Post(title=title, content=content, user_id=user_id)
-    db.session.add(new_post)
-    db.session.commit()
-    return jsonify({'message': 'post added successfully.', 'post': new_post.to_dict()}), 201
+
+    # Check if all required data is provided
+    if title and content and user_id:
+        try:
+            # Create a new Post object
+            post = Post(title=title, content=content, user_id=user_id)
+
+            # Add and commit the new post to the database
+            db.session.add(post)
+            db.session.commit()
+
+            # Return success response
+            return jsonify({'message': 'Post created successfully', 'post_id': post.id}), 201
+        except Exception as e:
+            # Return error response if an error occurs
+            db.session.rollback()
+            return jsonify({'message': 'Failed to create post', 'error': str(e)}), 500
+    else:
+        # Return error response if required data is missing
+        return jsonify({'message': 'Missing required data'}), 400
 
 
 @app.route('/posts/<int:id>',methods=["PUT"])
