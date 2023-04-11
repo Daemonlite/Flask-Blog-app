@@ -14,14 +14,36 @@ const [posts,setPost] = useState([])
 
 useEffect(()=>{
 axios.get('http://127.0.0.1:5000/posts')
-.then((res)=>setPost(res.data))
+.then((res)=>setPost(res.data.posts))
 .catch((err)=>console.log(err))
 
 },[])
 
   return (
     <div>
+<div>
+{posts.map((res)=>
 
+<Card sx={{ maxWidth: 545,marginTop:"100px",display:"flex",flexDirection:"column",flexWrap:"wrap",marginLeft:"370px" }}>
+
+<CardContent>
+  <Typography gutterBottom variant="h5" component="div">
+    {res.title}
+  </Typography>
+  <Typography gutterBottom variant="h6" component="div">
+    {res.created_at}
+  </Typography>
+  <Typography variant="body2" color="text.secondary">
+   {res.content}
+  </Typography>
+</CardContent>
+<CardActions>
+  <Button size="small">{res.comments.length} comments</Button>
+  <Button size="small">Learn More</Button>
+</CardActions>
+</Card>
+)}
+</div>
     </div>
   )
 }
