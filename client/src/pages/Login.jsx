@@ -53,7 +53,9 @@ const Login = () => {
       <h2 className="head">Login to Continue</h2>
       <div className="Login">
         <div id="signInDiv"></div>
+        
       </div>
+      <p>don't have an account ? <a href="/register">register</a></p>
     </div>
   );
 };
