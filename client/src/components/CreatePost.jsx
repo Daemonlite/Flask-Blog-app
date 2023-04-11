@@ -3,10 +3,31 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import {useState } from 'react'
 import { Button } from '@mui/material';
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
+
 const CreatePost = () => {
     const [title,setTitle] = useState("")
     const [content,setContent] = useState("")
-    const user = localStorage.getItem("userInfo")
+    const User = localStorage.getItem("userInfo")
+    const navigate = useNavigate();
+
+
+    const handlesubmit = () => {
+      
+        axios.post('http://127.0.0.1:5000/posts/create',{
+            title,
+            content,
+            user_id:User.id
+        })
+        .then((res)=>{
+            console.log(res.data)
+            toast.success('post created')
+            navigate('/')
+        })
+        .catch((err)=>console.log(err))
+    }
   return (
     <div style={{marginTop:"100px"}}>
 <h2 style={{textAlign:"center"}}> CreatePost</h2>
@@ -20,6 +41,7 @@ const CreatePost = () => {
       noValidate
       autoComplete="off"
       className='form-group fis'
+      onSubmit={handlesubmit}
     >
       <TextField
         hiddenLabel
@@ -27,14 +49,16 @@ const CreatePost = () => {
         variant="filled"
         size="small"
         label='enter post title'
+        onChange={(e)=>setTitle(e.target.value)}
       />
       <textarea
         style={{height:"250px"}}
         className='form-control'
         placeholder='enter post body'
+        onChange={(e)=>setContent(e.target.value)}
       />
 
-      <Button variant='contained'>Post</Button>
+      <Button variant='contained' type='submit'>Post</Button>
     </Stack>
     
     </div>
