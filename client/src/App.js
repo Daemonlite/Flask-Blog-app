@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from 'react-toastify'
 import Register from './pages/Register';
 import Home from './pages/Home';
+import NavBar from './components/NavBar';
 
 
 function App() {
@@ -15,11 +16,12 @@ function App() {
     <div>
      <BrowserRouter>
      <ToastContainer position='bottom-left'/>
-     
+     <NavBar/>
      <Routes>
      <Route path='/register' element={<Register/>}/>
      <Route path='/login' element={<Login/>}/>
      <Route path='/' element={<Home/>}/>
+   
      </Routes>
      </BrowserRouter>
 
