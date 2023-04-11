@@ -4,14 +4,18 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
 const [posts,setPost] = useState([])
-
+const navigate = useNavigate()
+const user = JSON.parse(localStorage.getItem("userInfo"))
 useEffect(()=>{
 axios.get('http://127.0.0.1:5000/posts')
 .then((res)=>setPost(res.data.posts))
@@ -19,6 +23,9 @@ axios.get('http://127.0.0.1:5000/posts')
 
 },[])
 
+if(!user){
+  navigate('/login')
+}
   return (
     <div>
 <div>
@@ -38,8 +45,12 @@ axios.get('http://127.0.0.1:5000/posts')
   </Typography>
 </CardContent>
 <CardActions>
-  <Button size="small">{res.comments.length} comments</Button>
-  <Button size="small">Learn More</Button>
+<IconButton aria-label="add to favorites">
+ {res.likes.length} <FavoriteIcon />
+</IconButton>
+  <IconButton aria-label="add to favorites">
+  {res.comments.length} <ChatBubbleOutlineIcon/>
+</IconButton>
 </CardActions>
 </Card>
 )}
