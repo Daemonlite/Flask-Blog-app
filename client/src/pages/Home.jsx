@@ -12,6 +12,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const Home = () => {
 const [posts,setPost] = useState([])
 const navigate = useNavigate()
@@ -25,6 +26,17 @@ axios.get('http://127.0.0.1:5000/posts')
 
 if(!user){
   navigate('/login')
+}
+const  id = user.user.id
+const likePost = (id) => {
+  axios.post(`http://127.0.0.1:5000/post/${id}/like`,{
+    user_id : id
+  })
+  .then((res)=>{
+      console.log(res.data)
+      
+  })
+  .catch((err)=>console.log(err))
 }
   return (
     <div>
@@ -45,7 +57,7 @@ if(!user){
   </Typography>
 </CardContent>
 <CardActions>
-<IconButton aria-label="add to favorites">
+<IconButton aria-label="add to favorites" onClick={()=>likePost(res.id)}>
  {res.likes.length} <FavoriteIcon />
 </IconButton>
   <IconButton aria-label="add to favorites">
