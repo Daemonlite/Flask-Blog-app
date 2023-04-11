@@ -27,3 +27,16 @@ a{
   text-decoration: none;
   color: black;
 }
+.links{
+  color:#fff;
+  list-style-type: none;
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  gap: 10px;
+  font-size: large;
+}
+.buts{
+  color:"#fff";
+  margin-top: 10px;
+}
