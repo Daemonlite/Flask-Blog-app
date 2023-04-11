@@ -9,6 +9,8 @@ import {ToastContainer} from 'react-toastify'
 import Register from './pages/Register';
 import Home from './pages/Home';
 import NavBar from './components/NavBar';
+import CreatePost from './components/CreatePost';
+
 
 
 function App() {
@@ -21,7 +23,7 @@ function App() {
      <Route path='/register' element={<Register/>}/>
      <Route path='/login' element={<Login/>}/>
      <Route path='/' element={<Home/>}/>
-   
+     <Route path='/post/create' element={<CreatePost/>} />
      </Routes>
      </BrowserRouter>
 
