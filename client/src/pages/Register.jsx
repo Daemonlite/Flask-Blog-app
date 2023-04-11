@@ -40,8 +40,6 @@ const Register = () => {
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         navigate("/home");
       }
-      setpassword("");
-      setEmail("");
     })
     .catch((err) => {
       toast.error(err.message)

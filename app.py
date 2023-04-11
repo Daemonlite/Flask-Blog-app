@@ -10,7 +10,7 @@ CORS(app)  # Apply CORS settings to the Flask app
 @app.after_request
 def add_cors_headers(response):
     # Add CORS headers to the response
-    response.headers.add('Access-Control-Allow-Origin', '*') # Allow requests from any origin
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000') # Allow requests from this origin
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization') # Allow specific headers
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE') # Allow specific HTTP methods
     return response
