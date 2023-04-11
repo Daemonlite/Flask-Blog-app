@@ -1,6 +1,14 @@
-import React from 'react'
+import { Button } from '@mui/material'
+import {useNavigate} from 'react-router-dom'
 
 const NavBar = () => {
+    const user = JSON.parse(localStorage.getItem("userInfo"))
+    const navigate = useNavigate()
+
+    const logout = () => {
+        localStorage.removeItem("userInfo")
+        navigate('/login')
+    }
   return (
     <div>
         <nav className="navbar navbar-dark bg-dark fixed-top">
@@ -20,26 +28,19 @@ const NavBar = () => {
             <a className="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li className="nav-item">
+            <a className="nav-link" href="/post/create">Create Post</a>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" href="/">Link</a>
           </li>
-          <li className="nav-item dropdown">
-            <p className="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </p>
-            <ul className="dropdown-menu dropdown-menu-dark">
-              <li><a className="dropdown-item" href="/post/create">Create Post</a></li>
-              <li><a className="dropdown-item" href="/">Another action</a></li>
-              <li>
-                <hr className="dropdown-divider"/>
-              </li>
-              <li><a className="dropdown-item" href="/">Something else here</a></li>
-            </ul>
-          </li>
+         {!user ? ( <li className="nav-item">
+            <a className="nav-link" href="/login">Login</a>
+          </li>):(   <li className="nav-item">
+            <Button variant='contained' className='nav-link' onClick={()=>logout()}>Logout</Button>
+          </li>)}
+       
         </ul>
-        <form className="d-flex mt-3" role="search">
-          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-          <button className="btn btn-success" type="submit">Search</button>
-        </form>
+     
       </div>
     </div>
   </div>
