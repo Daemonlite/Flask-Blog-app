@@ -28,6 +28,8 @@ const CreatePost = () => {
         })
         .catch((err)=>console.log(err))
     }
+
+
   return (
     <div style={{marginTop:"100px"}}>
 <h2 style={{textAlign:"center"}}> CreatePost</h2>

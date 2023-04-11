@@ -192,6 +192,11 @@ def create_like(post_id):
     # Get the data from the request
     user_id = request.json.get('user_id')
 
+    # Check if user has already liked the post
+    existing_like = Like.query.filter_by(user_id=user_id, post_id=post.id).first()
+    if existing_like:
+        return jsonify({'message': 'You have already liked this post'}), 400
+
     # Create a new like
     like = Like(user_id=user_id, post_id=post.id)
     db.session.add(like)
